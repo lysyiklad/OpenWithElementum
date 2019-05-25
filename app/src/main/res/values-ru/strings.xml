@@ -12,6 +12,10 @@
     <string name="pref_select_app_description">Выберите приложение, которое будет запущено при открытии ссылки</string>
     <string name="pref_network_host">Kodi в локальной сети</string>
     <string name="pref_check_updates">Проверить обновления</string>
+    <string name="pref_service_acestream">Используемый сервис AceStream</string>
+    <string name="pref_service_sopcast">Используемый сервис SopCast</string>
+    <string name="pref_acestream_description">Поддерживаются proxy AceStream, TAM, Plexus</string>
+    <string name="pref_sopcast_description">Поддерживаются Plexus</string>
 
     <string name="update_dialog_btn_download">Обновить сейчас</string>
     <string name="update_dialog_btn_cancel">Позже</string>

@@ -2,6 +2,7 @@ package su.css3.openwithelementum;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -29,18 +30,23 @@ public class OpenLinkActivity extends Activity {
 
         this.link = getIntent().getData();
         if (this.link == null) {
-            finish();
-            return;
+            ClipData clipData = getIntent().getClipData();
+            if (clipData != null){
+                String link = clipData.getItemAt(0).getText().toString();
+                this.link = Uri.parse(link);
+                if (this.link == null){
+                    finish();
+                    return;
+                }
+            }
+            else{
+                finish();
+                return;
+            }
         }
 
         if ("magnet".equals(this.link.getScheme())) {
             openLink(this.link.toString());
-            finish();
-            return;
-        }
-
-        if (checkPermissions()) {
-            openTorrent(this.link);
             finish();
             return;
         }
@@ -53,6 +59,12 @@ public class OpenLinkActivity extends Activity {
 
         if ("sop".equals(this.link.getScheme())) {
             openLinkSopcast(this.link.toString());
+            finish();
+            return;
+        }
+
+        if (checkPermissions()) {
+            openTorrent(this.link);
             finish();
             return;
         }

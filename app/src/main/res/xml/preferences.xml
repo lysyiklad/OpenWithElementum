@@ -7,6 +7,20 @@
         android:defaultValue="Elementum"
         android:entries="@array/services"
         android:entryValues="@array/services" />
+    <ListPreference
+        android:title="Startup method Ace Stream"
+        android:summary="Startup method Ace Stream"
+        android:key="methodace"
+        android:defaultValue="AceStream"
+        android:entries="@array/methodace"
+        android:entryValues="@array/methodace" />
+    <ListPreference
+        android:title="Startup method Sopcast"
+        android:summary="Startup method Sopcast"
+        android:key="methodsopcast"
+        android:defaultValue="Plexus"
+        android:entries="@array/methodsop"
+        android:entryValues="@array/methodsop" />
     <EditTextPreference
         android:title="@string/pref_wait_timeout"
         android:defaultValue="10"
@@ -26,5 +40,6 @@
         android:summary="@string/pref_host_description"/>
     <Preference
         android:title="@string/pref_check_updates"
-        android:key="update"/>
+        android:key="update"
+        android:enabled="false"/>
 </PreferenceScreen>

@@ -45,6 +45,18 @@ public class OpenLinkActivity extends Activity {
             return;
         }
 
+        if ("acestream".equals(this.link.getScheme())) {
+            openLinkAceStream(this.link.toString());
+            finish();
+            return;
+        }
+
+        if ("sop".equals(this.link.getScheme())) {
+            openLinkSopcast(this.link.toString());
+            finish();
+            return;
+        }
+
         requestPermission();
     }
 
@@ -97,4 +109,45 @@ public class OpenLinkActivity extends Activity {
 
         UpdateChecker.checkForToast(context);
     }
+
+    protected void openLinkAceStream(String url) {
+        final Context context = getApplicationContext();
+
+        String service = "AceStream";
+        String kodiPackageName = PreferencesUtils.getKodiPackageName(context);
+        if (kodiPackageName != null) {
+            AppUtils.activateApp(context, kodiPackageName);
+        }
+
+        AppUtils.showMessage(context, R.string.service_link_sent, service);
+
+        AppUtils.playLinkAceStream(context, url, status -> {
+            if (!status) {
+                AppUtils.showMessage(context, R.string.service_not_available, service);
+            }
+        });
+
+        UpdateChecker.checkForToast(context);
+    }
+
+    protected void openLinkSopcast(String url) {
+        final Context context = getApplicationContext();
+
+        String service = "Sopcast";
+        String kodiPackageName = PreferencesUtils.getKodiPackageName(context);
+        if (kodiPackageName != null) {
+            AppUtils.activateApp(context, kodiPackageName);
+        }
+
+        AppUtils.showMessage(context, R.string.service_link_sent, service);
+
+        AppUtils.playLinkSopCast(context, url, status -> {
+            if (!status) {
+                AppUtils.showMessage(context, R.string.service_not_available, service);
+            }
+        });
+
+        UpdateChecker.checkForToast(context);
+    }
+
 }

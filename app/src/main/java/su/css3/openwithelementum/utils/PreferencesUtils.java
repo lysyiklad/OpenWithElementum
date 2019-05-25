@@ -66,4 +66,14 @@ public class PreferencesUtils {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPreferences.edit().putLong(KEY_PREF_LAST_UPDATE, System.currentTimeMillis()).apply();
     }
+
+    public static String getMethodAceStream(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString("methodace", "AceStream");
+    }
+
+    public static String getMethodSopcast(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString("methodsopcast", "Plexus");
+    }
 }

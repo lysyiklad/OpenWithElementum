@@ -25,10 +25,10 @@ public class AppUtils {
             String packageName = packageInfo.packageName;
             if (packageInfo.enabled && (
                     packageName.startsWith("org.xbmc.kodi")
-                    || packageName.startsWith("com.semperpax.spmc")
-                    || packageName.startsWith("com.zidoo.zdmc")
-                    || packageName.startsWith("org.xbmc.ftmc")
-                    )) {
+                            || packageName.startsWith("com.semperpax.spmc")
+                            || packageName.startsWith("com.zidoo.zdmc")
+                            || packageName.startsWith("org.xbmc.ftmc")
+            )) {
                 CharSequence[] item = {packageName, packageInfo.loadLabel(packageManager)};
                 result.add(item);
             }
@@ -44,7 +44,8 @@ public class AppUtils {
             if (ai != null && ai.enabled) {
                 return true;
             }
-        } catch (PackageManager.NameNotFoundException ignored) {}
+        } catch (PackageManager.NameNotFoundException ignored) {
+        }
         return false;
     }
 
@@ -101,4 +102,95 @@ public class AppUtils {
             listener.onReady(false);
         }
     }
+
+    public static void playLinkAceStream(Context context, String magnetUrl, WebService.ResponseListener listener) {
+        final String host = PreferencesUtils.getHost(context);
+        final int maxAttempts = PreferencesUtils.getTimeout(context);
+        final String methodAce = PreferencesUtils.getMethodAceStream(context);
+        playAceStream(methodAce, host, maxAttempts, magnetUrl, listener);
+    }
+
+    public static void playLinkSopCast(Context context, String magnetUrl, WebService.ResponseListener listener) {
+        final String host = PreferencesUtils.getHost(context);
+        final int maxAttempts = PreferencesUtils.getTimeout(context);
+        final String methodSopcast = PreferencesUtils.getMethodSopcast(context);
+        playSopcast(methodSopcast, host, maxAttempts, magnetUrl, listener);
+    }
+
+
+    private static void playAceStream(String methodAce, String host, int maxAttempts, String aceUrl, WebService.ResponseListener listener) {
+        try {
+
+            JSONObject item = new JSONObject();
+            if (methodAce.equals("AceStream")) {
+                item.put("file", "http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12));
+            } else if (methodAce.equals("Plexus")) {
+                item.put("file", "plugin://program.plexus/?mode=1&url=" + aceUrl.substring(12) + "&name=" + aceUrl.substring(12));
+            }
+            else if (methodAce.equals("TAM")) {
+                item.put("file", "plugin://plugin.video.tam/?mode=play&url=" + aceUrl + "&engine=ace_proxy");
+            }
+
+
+            JSONObject params = new JSONObject();
+            params.put("item", item);
+
+            JSONObject data = new JSONObject();
+            data.put("id", 1);
+            data.put("jsonrpc", "2.0");
+            data.put("method", "Player.Open");
+            data.put("params", params);
+
+            String link = "";
+            String postData = "";
+
+            if (methodAce.equals("AceStream")) {
+                link = "http://" + host + ":8080/jsonrpc" + "?request=" + data.toString();
+                postData = "acestream";
+            } else {
+                link = "http://" + host + ":8080/jsonrpc";
+                postData = data.toString();
+            }
+
+            WebService ws = new WebService(link, listener, maxAttempts, postData);
+            ws.execute();
+        } catch (Exception e) {
+            listener.onReady(false);
+        }
+    }
+
+    private static void playSopcast(String methodSopcast, String host, int maxAttempts, String aceUrl, WebService.ResponseListener listener) {
+        try {
+
+            JSONObject item = new JSONObject();
+            if (methodSopcast.equals("Plexus")) {
+                item.put("file", "plugin://program.plexus/?mode=2&url=" + URLEncoder.encode(aceUrl, "UTF-8") + "&name=Sopcast");
+            } else {
+                return;
+            }
+
+            JSONObject params = new JSONObject();
+            params.put("item", item);
+
+            JSONObject data = new JSONObject();
+            data.put("id", 1);
+            data.put("jsonrpc", "2.0");
+            data.put("method", "Player.Open");
+            data.put("params", params);
+
+            String link = "";
+            String postData = "";
+
+            if (methodSopcast.equals("Plexus")) {
+                link = "http://" + host + ":8080/jsonrpc";
+                postData = data.toString();
+            }
+
+            new WebService(link, listener, maxAttempts, postData).execute();
+        } catch (Exception e) {
+            listener.onReady(false);
+        }
+    }
+
+
 }

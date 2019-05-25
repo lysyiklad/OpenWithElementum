@@ -4,4 +4,12 @@
         <item>Elementum</item>
         <item>TorrServe</item>
     </string-array>
+    <string-array name="methodace" translatable="false">
+        <item>AceStream</item>
+        <item>TAM</item>
+        <item>Plexus</item>
+    </string-array>
+    <string-array name="methodsop" translatable="false">
+        <item>Plexus</item>
+    </string-array>
 </resources>

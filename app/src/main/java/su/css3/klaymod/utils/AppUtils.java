@@ -1,4 +1,4 @@
-package su.css3.openwithelementum.utils;
+package su.css3.klaymod.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import su.css3.openwithelementum.system.WebService;
+import su.css3.klaymod.system.WebService;
 
 public class AppUtils {
 
@@ -78,6 +78,7 @@ public class AppUtils {
             JSONObject item = new JSONObject();
             item.put("file", "plugin://plugin.video.torrserve/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
 
+
             JSONObject params = new JSONObject();
             params.put("item", item);
 
@@ -123,11 +124,16 @@ public class AppUtils {
 
             JSONObject item = new JSONObject();
             if (methodAce.equals("AceStream")) {
-                item.put("file", "http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12));
+                // URLEncoder.encode(aceUrl, "UTF-8")
+                // item.put("file", URLEncoder.encode("http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12), "UTF-8"));
+                // item.put("file", "http://192.168.10.152:6878/ace/getstream?infohash=cdee5cf35013448586286837ca5a310d0a4bb6e6");
+                item.put("file", "http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12) + "&.mp4");
+            } else if (methodAce.equals("HTTPAceProxy")) {
+                // item.put("file", URLEncoder.encode("http://" + host + ":8000/pid/" + aceUrl.substring(12) + "/stream.mp4", "UTF-8"));
+                item.put("file", "http://" + host + ":8000/pid/" + aceUrl.substring(12) + "/stream.mp4");
             } else if (methodAce.equals("Plexus")) {
                 item.put("file", "plugin://program.plexus/?mode=1&url=" + aceUrl.substring(12) + "&name=" + aceUrl.substring(12));
-            }
-            else if (methodAce.equals("TAM")) {
+            } else if (methodAce.equals("TAM")) {
                 item.put("file", "plugin://plugin.video.tam/?mode=play&url=" + aceUrl + "&engine=ace_proxy");
             }
 
@@ -144,13 +150,13 @@ public class AppUtils {
             String link = "";
             String postData = "";
 
-            if (methodAce.equals("AceStream")) {
-                link = "http://" + host + ":8080/jsonrpc" + "?request=" + data.toString();
-                postData = "acestream";
-            } else {
+            //if (methodAce.equals("AceStream") || methodAce.equals("HTTPAceProxy")) {
+            //    link = "http://" + host + ":8080/jsonrpc" + "?request=" + data.toString();
+            //    postData = "acestream";
+            //} else {
                 link = "http://" + host + ":8080/jsonrpc";
                 postData = data.toString();
-            }
+            //}
 
             WebService ws = new WebService(link, listener, maxAttempts, postData);
             ws.execute();

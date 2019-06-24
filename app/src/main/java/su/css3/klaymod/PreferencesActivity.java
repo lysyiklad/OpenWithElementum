@@ -1,4 +1,4 @@
-package su.css3.openwithelementum;
+package su.css3.klaymod;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.preference.PreferenceFragment;
 
 import java.util.List;
 
-import su.css3.openwithelementum.update.UpdateChecker;
-import su.css3.openwithelementum.utils.AppUtils;
-import su.css3.openwithelementum.utils.PreferencesUtils;
+import su.css3.klaymod.update.UpdateChecker;
+import su.css3.klaymod.utils.AppUtils;
+import su.css3.klaymod.utils.PreferencesUtils;
 
 public class PreferencesActivity extends PreferenceActivity {
 

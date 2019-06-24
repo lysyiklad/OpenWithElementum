@@ -39,12 +39,12 @@ android {
         }
 
         defaultConfig {
-            applicationId "su.css3.openwithelementum"
+            applicationId "su.css3.klaymod"
             minSdkVersion 19
             targetSdkVersion 26
             versionCode versionBuild
             versionName versionString
-            setProperty("archivesBaseName", "Klay-${versionMajor}.${versionMinor}.${versionPatch}")
+            setProperty("archivesBaseName", "KlayMOD")
         }
     } else {
         throw new GradleException("Could not read version.properties!")

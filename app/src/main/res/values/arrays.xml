@@ -6,6 +6,7 @@
     </string-array>
     <string-array name="methodace" translatable="false">
         <item>AceStream</item>
+        <item>HTTPAceProxy</item>
         <item>TAM</item>
         <item>Plexus</item>
     </string-array>

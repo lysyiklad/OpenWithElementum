@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="su.css3.openwithelementum">
+    package="su.css3.klaymod">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PreferencesActivity"
+        <activity android:name="su.css3.klaymod.PreferencesActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OpenLinkActivity"
+        <activity android:name="su.css3.klaymod.OpenLinkActivity"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
@@ -66,7 +66,7 @@
         </activity>
 
         <service
-            android:name=".update.DownloadService"
+            android:name="su.css3.klaymod.update.DownloadService"
             android:exported="false" />
         <provider
             android:name="android.support.v4.content.FileProvider"

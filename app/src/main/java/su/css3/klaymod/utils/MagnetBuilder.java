@@ -1,4 +1,4 @@
-package su.css3.openwithelementum.utils;
+package su.css3.klaymod.utils;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import su.css3.openwithelementum.bencode.Bencode;
-import su.css3.openwithelementum.bencode.BencodeInt;
-import su.css3.openwithelementum.bencode.BencodeMap;
-import su.css3.openwithelementum.bencode.BencodeString;
+import su.css3.klaymod.bencode.Bencode;
+import su.css3.klaymod.bencode.BencodeInt;
+import su.css3.klaymod.bencode.BencodeMap;
+import su.css3.klaymod.bencode.BencodeString;
 
 public class MagnetBuilder {
     private String hash;

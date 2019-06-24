@@ -1,4 +1,4 @@
-package su.css3.openwithelementum.utils;
+package su.css3.klaymod.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

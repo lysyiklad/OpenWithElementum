@@ -1,4 +1,4 @@
-package su.css3.openwithelementum;
+package su.css3.klaymod;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,10 +13,10 @@ import android.support.v4.content.ContextCompat;
 import java.io.IOException;
 import java.io.InputStream;
 
-import su.css3.openwithelementum.utils.MagnetBuilder;
-import su.css3.openwithelementum.update.UpdateChecker;
-import su.css3.openwithelementum.utils.AppUtils;
-import su.css3.openwithelementum.utils.PreferencesUtils;
+import su.css3.klaymod.utils.MagnetBuilder;
+import su.css3.klaymod.update.UpdateChecker;
+import su.css3.klaymod.utils.AppUtils;
+import su.css3.klaymod.utils.PreferencesUtils;
 
 public class OpenLinkActivity extends Activity {
 
@@ -30,16 +30,16 @@ public class OpenLinkActivity extends Activity {
 
         this.link = getIntent().getData();
         if (this.link == null) {
-            ClipData clipData = getIntent().getClipData();
-            if (clipData != null){
+            ClipData clipData;
+            clipData = getIntent().getClipData();
+            if (clipData != null) {
                 String link = clipData.getItemAt(0).getText().toString();
                 this.link = Uri.parse(link);
-                if (this.link == null){
+                if (this.link == null) {
                     finish();
                     return;
                 }
-            }
-            else{
+            } else {
                 finish();
                 return;
             }

@@ -66,17 +66,22 @@ public class AppUtils {
         final String host = PreferencesUtils.getHost(context);
         final int maxAttempts = PreferencesUtils.getTimeout(context);
 
-        if (PreferencesUtils.TORRSERVE.equals(service)) {
-            playTorrServe(host, maxAttempts, magnetUrl, listener);
-        } else {
+        if (PreferencesUtils.ELEMENTUM.equals(service)) {
             playElementum(host, maxAttempts, magnetUrl, listener);
+        } else {
+            playTorrServe(service, host, maxAttempts, magnetUrl, listener);
         }
     }
 
-    private static void playTorrServe(String host, int maxAttempts, String magnetUrl, WebService.ResponseListener listener) {
+    private static void playTorrServe(String service, String host, int maxAttempts, String magnetUrl, WebService.ResponseListener listener) {
         try {
             JSONObject item = new JSONObject();
-            item.put("file", "plugin://plugin.video.torrserve/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
+            if (PreferencesUtils.TORRSERVE.equals(service)) {
+                item.put("file", "plugin://plugin.video.torrserve/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
+            }
+            else if (PreferencesUtils.TORRSERVER_AE.equals(service)){
+                item.put("file", "plugin://plugin.video.torrserver/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
+            }
 
 
             JSONObject params = new JSONObject();

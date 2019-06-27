@@ -3,6 +3,7 @@
     <string-array name="services" translatable="false">
         <item>Elementum</item>
         <item>TorrServe</item>
+        <item>TorrServer (AE)</item>
     </string-array>
     <string-array name="methodace" translatable="false">
         <item>AceStream</item>

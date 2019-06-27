@@ -16,6 +16,7 @@ public class PreferencesUtils {
 
     public static final String ELEMENTUM = "Elementum";
     public static final String TORRSERVE = "TorrServe";
+    public static final String TORRSERVER_AE = "TorrServer (AE)";
 
     private static final String LOCALHOST = "127.0.0.1";
     private static final String DEFAULT_TIMEOUT = "10";

@@ -73,16 +73,10 @@ public class AppUtils {
         }
     }
 
-    private static void playTorrServe(String service, String host, int maxAttempts, String magnetUrl, WebService.ResponseListener listener) {
+    private static void postRequest(String itemFile, String host, int maxAttempts, WebService.ResponseListener listener) {
         try {
             JSONObject item = new JSONObject();
-            if (PreferencesUtils.TORRSERVE.equals(service)) {
-                item.put("file", "plugin://plugin.video.torrserve/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
-            }
-            else if (PreferencesUtils.TORRSERVER_AE.equals(service)){
-                item.put("file", "plugin://plugin.video.torrserver/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8"));
-            }
-
+            item.put("file", itemFile);
 
             JSONObject params = new JSONObject();
             params.put("item", item);
@@ -95,6 +89,20 @@ public class AppUtils {
 
             String link = "http://" + host + ":8080/jsonrpc";
             new WebService(link, listener, maxAttempts, data.toString()).execute();
+        } catch (Exception e) {
+            listener.onReady(false);
+        }
+    }
+
+    private static void playTorrServe(String service, String host, int maxAttempts, String magnetUrl, WebService.ResponseListener listener) {
+        try{
+            String itemFile = "";
+            if (PreferencesUtils.TORRSERVE.equals(service)) {
+                itemFile = "plugin://plugin.video.torrserve/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8");
+            } else if (PreferencesUtils.TORRSERVER_AE.equals(service)) {
+                itemFile = "plugin://plugin.video.torrserver/?action=play_now&selFile=0&magnet=" + URLEncoder.encode(magnetUrl, "UTF-8");
+            }
+            postRequest(itemFile, host, maxAttempts, listener);
         } catch (Exception e) {
             listener.onReady(false);
         }
@@ -127,44 +135,18 @@ public class AppUtils {
     private static void playAceStream(String methodAce, String host, int maxAttempts, String aceUrl, WebService.ResponseListener listener) {
         try {
 
-            JSONObject item = new JSONObject();
+            String itemFile = "";
             if (methodAce.equals("AceStream")) {
-                // URLEncoder.encode(aceUrl, "UTF-8")
-                // item.put("file", URLEncoder.encode("http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12), "UTF-8"));
-                // item.put("file", "http://192.168.10.152:6878/ace/getstream?infohash=cdee5cf35013448586286837ca5a310d0a4bb6e6");
-                item.put("file", "http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12) + "&.mp4");
+                itemFile = "http://" + host + ":6878/ace/getstream?id=" + aceUrl.substring(12) + "&.mp4";
             } else if (methodAce.equals("HTTPAceProxy")) {
-                // item.put("file", URLEncoder.encode("http://" + host + ":8000/pid/" + aceUrl.substring(12) + "/stream.mp4", "UTF-8"));
-                item.put("file", "http://" + host + ":8000/pid/" + aceUrl.substring(12) + "/stream.mp4");
+                itemFile = "http://" + host + ":8000/pid/" + aceUrl.substring(12) + "/stream.mp4";
             } else if (methodAce.equals("Plexus")) {
-                item.put("file", "plugin://program.plexus/?mode=1&url=" + aceUrl.substring(12) + "&name=" + aceUrl.substring(12));
+                itemFile = "plugin://program.plexus/?mode=1&url=" + aceUrl.substring(12) + "&name=" + aceUrl.substring(12);
             } else if (methodAce.equals("TAM")) {
-                item.put("file", "plugin://plugin.video.tam/?mode=play&url=" + aceUrl + "&engine=ace_proxy");
+                itemFile = "plugin://plugin.video.tam/?mode=play&url=" + aceUrl + "&engine=ace_proxy";
             }
 
-
-            JSONObject params = new JSONObject();
-            params.put("item", item);
-
-            JSONObject data = new JSONObject();
-            data.put("id", 1);
-            data.put("jsonrpc", "2.0");
-            data.put("method", "Player.Open");
-            data.put("params", params);
-
-            String link = "";
-            String postData = "";
-
-            //if (methodAce.equals("AceStream") || methodAce.equals("HTTPAceProxy")) {
-            //    link = "http://" + host + ":8080/jsonrpc" + "?request=" + data.toString();
-            //    postData = "acestream";
-            //} else {
-                link = "http://" + host + ":8080/jsonrpc";
-                postData = data.toString();
-            //}
-
-            WebService ws = new WebService(link, listener, maxAttempts, postData);
-            ws.execute();
+            postRequest(itemFile, host, maxAttempts, listener);
         } catch (Exception e) {
             listener.onReady(false);
         }
@@ -173,31 +155,14 @@ public class AppUtils {
     private static void playSopcast(String methodSopcast, String host, int maxAttempts, String aceUrl, WebService.ResponseListener listener) {
         try {
 
-            JSONObject item = new JSONObject();
+
+            String itemFile = "";
             if (methodSopcast.equals("Plexus")) {
-                item.put("file", "plugin://program.plexus/?mode=2&url=" + URLEncoder.encode(aceUrl, "UTF-8") + "&name=Sopcast");
+                itemFile = "plugin://program.plexus/?mode=2&url=" + URLEncoder.encode(aceUrl, "UTF-8") + "&name=Sopcast";
             } else {
                 return;
             }
-
-            JSONObject params = new JSONObject();
-            params.put("item", item);
-
-            JSONObject data = new JSONObject();
-            data.put("id", 1);
-            data.put("jsonrpc", "2.0");
-            data.put("method", "Player.Open");
-            data.put("params", params);
-
-            String link = "";
-            String postData = "";
-
-            if (methodSopcast.equals("Plexus")) {
-                link = "http://" + host + ":8080/jsonrpc";
-                postData = data.toString();
-            }
-
-            new WebService(link, listener, maxAttempts, postData).execute();
+            postRequest(itemFile, host, maxAttempts, listener);
         } catch (Exception e) {
             listener.onReady(false);
         }

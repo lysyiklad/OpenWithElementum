@@ -1,4 +1,4 @@
-package su.css3.openwithelementum.system;
+package su.css3.klaymod.system;
 
 import android.os.AsyncTask;
 
@@ -43,40 +43,29 @@ public class WebService extends AsyncTask<String, Void, Boolean> {
 
             httpConnection = (HttpURLConnection) url.openConnection();
 
-            if ("acestream".equals(postData)) {
+            if (postData != null) {
+                httpConnection.setRequestMethod("POST");
+                httpConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                httpConnection.setRequestProperty("Accept", "application/json");
+                httpConnection.setDoOutput(true);
+                httpConnection.setDoInput(true);
+            } else {
                 httpConnection.setRequestMethod("GET");
                 httpConnection.setRequestProperty("Content-length", "0");
-                httpConnection.setRequestProperty("Content-Type", "application/json");
-            } else {
-
-                if (postData != null) {
-                    httpConnection.setRequestMethod("POST");
-                    httpConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    httpConnection.setRequestProperty("Accept", "application/json");
-                    httpConnection.setDoOutput(true);
-                    httpConnection.setDoInput(true);
-                } else {
-                    httpConnection.setRequestMethod("GET");
-                    httpConnection.setRequestProperty("Content-length", "0");
-                }
-
-                httpConnection.setUseCaches(false);
-                httpConnection.setAllowUserInteraction(false);
-
-                if (postData == null || postData.contains("plugin.video.torrserve")) {
-                    httpConnection.setConnectTimeout(200);
-                    httpConnection.setReadTimeout(1000);
-                }
-
-                if (postData != null) {
-                    DataOutputStream os = new DataOutputStream(httpConnection.getOutputStream());
-                    os.writeBytes(postData);
-                    os.flush();
-                    os.close();
-                }
-
             }
 
+            httpConnection.setUseCaches(false);
+            httpConnection.setAllowUserInteraction(false);
+
+            if (postData == null) {
+                httpConnection.setConnectTimeout(200);
+                httpConnection.setReadTimeout(1000);
+            } else {
+                DataOutputStream os = new DataOutputStream(httpConnection.getOutputStream());
+                os.writeBytes(postData);
+                os.flush();
+                os.close();
+            }
 
             httpConnection.connect();
             int responseCode = httpConnection.getResponseCode();
